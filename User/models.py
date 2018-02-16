@@ -25,3 +25,26 @@ class UserCourses(models.Model):
         """
         return "UserCourses Model: {}, {}" .format(self.user, self.course_id)
 
+class FacultyCourses(models.Model):
+    """
+    FacultyCourses Model
+    """
+    ufid = models.BigAutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete="cascade")
+    course_id = models.BigIntegerField()
+    date_created = models.DateTimeField()
+    date_modified = models.DateTimeField()
+
+    def __str__(self):
+        """
+        string representations of the model
+        :return:
+        """
+        return "FacultyCourses Model: {}, {}" .format(self.user, self.course_id)
+
+    def __repr__(self):
+        """
+        representation of the model
+        :return:
+        """
+        return "FacultyCourses Model: {}, {}" .format(self.user, self.course_id)
