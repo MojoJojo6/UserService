@@ -1,7 +1,8 @@
 from django.db import models
+from django.contrib.auth.models import AbstractBaseUser
 
 # Create your models here.
-class User(models.Model):
+class User(AbstractBaseUser):
     """ User Table for User Service"""
     Uid = models.BigAutoField(primary_key=True)
     FirstNamme = models.CharField(max_length = 20)
@@ -9,9 +10,16 @@ class User(models.Model):
     EmailId = models.EmailField(unique = True)
     Password = models.CharField(max_length = 256)
     MobileNumber = models.CharField(max_length= 20)
+    Role = models.IntegerField(choices=[(0,"Admin"),(1,"Faculty"),(2,"Student")])
+    is_active = models.BooleanField()
     DateCreated = models.DateTimeField()
     DateModified = models.DateTimeField()
 
+    USERNAME_FIELD = 'EmailId'
+    REQUIRED_FIELDS = ['FirstName','LastName','EmailId','Password','MobileNumber','Role']
+
+    def create_user(self):
+        
     """String Function for All CharField in User Model"""
     def __str__(self):
         return "{0}|{1}".format(self.FirstName,self.LastName)
