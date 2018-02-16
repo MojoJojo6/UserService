@@ -102,3 +102,10 @@ ENV/
 
 # pycharm settings
 .idea
+
+# venv 
+*Include
+*Lib
+*Scripts
+*tcl
+*pip-selfcheck.json
