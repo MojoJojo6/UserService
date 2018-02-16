@@ -109,3 +109,6 @@ ENV/
 *Scripts
 *tcl
 *pip-selfcheck.json
+
+# db
+*sqlite*
