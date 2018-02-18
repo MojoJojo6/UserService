@@ -2,8 +2,20 @@ from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser,BaseUserManager
 )
+
+
 class UserManager(BaseUserManager):
-    def create_user(self,email_id,first_name = None,last_name = None,role = None,password=None,is_staff = False,is_admin = True,is_active = True):
+
+    def create_user(self,
+                    email_id,
+                    first_name=None,
+                    last_name=None,
+                    role=None,
+                    password=None,
+                    is_staff=False,
+                    is_admin=True,
+                    is_active=True):
+
         if not email_id:
             raise ValueError("Email Id is required")
         if not password:
@@ -15,9 +27,7 @@ class UserManager(BaseUserManager):
         if role is None:
             raise ValueError("Role is required")
 
-        user_obj = self.model(
-            email_id = self.normalize_email(email_id)
-        )
+        user_obj = self.model( email_id=self.normalize_email(email_id))
         user_obj.first_name = first_name
         user_obj.last_name = last_name
         user_obj.role = role
@@ -27,7 +37,14 @@ class UserManager(BaseUserManager):
         user_obj.set_password(password)
         user_obj.save(using=self.db)
         return user_obj
-    def create_staffuser(self,email_id,first_name = None,last_name = None,role = None,password = None):
+
+    def create_staffuser(self,
+                         email_id,
+                         first_name=None,
+                         last_name=None,
+                         role=None,
+                         password=None):
+
         user = self.create_user(
             email_id,
             password = password,
@@ -37,7 +54,14 @@ class UserManager(BaseUserManager):
             is_staff = True
         )
         return user
-    def create_superuser(self,email_id,first_name = None,last_name = None,role = None,password = None):
+
+    def create_superuser(self,
+                         email_id,
+                         first_name=None,
+                         last_name=None,
+                         role=None,
+                         password=None):
+
         user = self.create_user(
             email_id,
             password = password,
@@ -47,7 +71,8 @@ class UserManager(BaseUserManager):
             is_staff=True,
             is_admin= True
         )
-# Create your models here.
+
+
 class User(AbstractBaseUser):
     """ User Table for User Service"""
     u_id = models.BigAutoField(primary_key=True)
@@ -89,7 +114,6 @@ class User(AbstractBaseUser):
         return self.email_id
 
 
-
 class UserCourses(models.Model):
     """
     UserCourses model
@@ -115,6 +139,7 @@ class UserCourses(models.Model):
         :return:
         """
         return "UserCourses Model: {}, {}" .format(self.user, self.course_id)
+
 
 class FacultyCourses(models.Model):
     """
