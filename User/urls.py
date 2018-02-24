@@ -21,6 +21,6 @@ from django.urls import include
 
 urlpatterns = [
     path("users/", UserList.as_view()),
-    path("users/<int:id>", UserList.as_view()),
+    path("users/<int:u_id>/", UserList.as_view()),
     path("user-create/", UserCreate.as_view())
 ]

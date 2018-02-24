@@ -34,7 +34,7 @@ class UserList(RetrieveAPIView):
     """
     returns the list of all users or a specific user with the email address
     """
-    lookup_field = "id"
+    lookup_field = "u_id"
     # multiple_lookup_fields = {"email_id"}
 
     def get_queryset(self):

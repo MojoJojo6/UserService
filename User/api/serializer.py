@@ -8,7 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
     """
     serializer for user model
     """
-    id = serializers.IntegerField(required=False, read_only=True)
+    u_id = serializers.IntegerField(required=False, read_only=True)
     first_name = serializers.CharField(max_length=20)
     last_name = serializers.CharField(max_length=20)
     email_id = serializers.EmailField(max_length=255)
@@ -22,7 +22,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'first_name', 'last_name', 'email_id', 'mobile_number', 'role', 'active', 'staff', 'admin', 'date_created', 'date_modified']
+        fields = ['u_id', 'first_name', 'last_name', 'email_id', 'mobile_number', 'role', 'active', 'staff', 'admin', 'date_created', 'date_modified']
 
 
 class UserCoursesSerializer(serializers.ModelSerializer):
