@@ -21,6 +21,7 @@ from rest_framework import status
 from rest_framework.generics import get_object_or_404
 from rest_framework.generics import ListAPIView
 from rest_framework.generics import CreateAPIView
+from rest_framework.generics import RetrieveAPIView
 
 from .models import User
 from .models import UserCourses
@@ -29,11 +30,11 @@ from .models import FacultyCourses
 from .api.serializer import UserSerializer
 
 
-class UserList(ListAPIView):
+class UserList(RetrieveAPIView):
     """
     returns the list of all users or a specific user with the email address
     """
-    # lookup_field = "email_id"
+    lookup_field = "id"
     # multiple_lookup_fields = {"email_id"}
 
     def get_queryset(self):
