@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import (
-    AbstractBaseUser,BaseUserManager
+    AbstractBaseUser,BaseUserManager,
 )
 
 
@@ -90,7 +90,7 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = 'email_id'
     REQUIRED_FIELDS = ['first_name','last_name','role']
 
-    object = UserManager()
+    objects = UserManager()
 
     def get_full_name(self):
         return "{0} {1}".format(self.first_name,self.last_name)

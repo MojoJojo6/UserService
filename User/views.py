@@ -28,17 +28,20 @@ from .models import UserCourses
 from .models import FacultyCourses
 
 from .api.serializer import UserSerializer
-from .api.serializer import FacultyCoursesSerializer
-from .api.serializer import UserCoursesSerializer
 
 
 class UserList(ListAPIView):
     """
     returns the list of all users or a specific user with the email address
     """
-    def __init__(self):
-        super()
-        self.multiple_lookup_fields = {'email_id'}
+    multiple_lookup_fields = {'email_id'}
+
+    def get_queryset(self):
+        """
+        returns the queryset
+        :return:
+        """
+        return User.objects.all()
 
     def get_serializer_class(self):
         """
@@ -56,5 +59,5 @@ class UserList(ListAPIView):
         for field in self.multiple_lookup_fields:
             filter[field] = self.kwargs[field]
 
-        obj = self.get_object_or_404(self.queryset, **filter)
+        obj = get_object_or_404(self.queryset, **filter)
         return obj
