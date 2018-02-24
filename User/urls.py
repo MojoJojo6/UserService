@@ -16,8 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from .views import UserList
+from .views import UserCreate
 from django.urls import include
 
 urlpatterns = [
-    path("users/", UserList.as_view())
+    path("users/", UserList.as_view()),
+    path("user-create/", UserCreate.as_view())
 ]

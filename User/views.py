@@ -18,10 +18,9 @@ Faculty Course:
 
 from django.shortcuts import render
 from rest_framework import status
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
 from rest_framework.generics import get_object_or_404
 from rest_framework.generics import ListAPIView
+from rest_framework.generics import CreateAPIView
 
 from .models import User
 from .models import UserCourses
@@ -61,3 +60,35 @@ class UserList(ListAPIView):
 
         obj = get_object_or_404(self.queryset, **filter)
         return obj
+
+
+class UserCreate(CreateAPIView):
+    """
+    returns the list of all users or a specific user with the email address
+    """
+
+    # def get_queryset(self):
+    #     """
+    #     returns the queryset
+    #     :return:
+    #     """
+    #     return User.objects.all()
+
+    def get_serializer_class(self):
+        """
+        returns the serializer class to be used
+        :return:
+        """
+        return UserSerializer
+
+    # def get_object(self):
+    #     """
+    #     returns the object instance
+    #     :return:
+    #     """
+    #     filter = {}
+    #     for field in self.multiple_lookup_fields:
+    #         filter[field] = self.kwargs[field]
+    #
+    #     obj = get_object_or_404(self.queryset, **filter)
+    #     return obj

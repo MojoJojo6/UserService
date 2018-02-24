@@ -22,7 +22,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'first_name', 'last_name', 'email_id', 'mobile_number', 'role', 'active', 'staff', 'admin']
+        fields = ['id', 'first_name', 'last_name', 'email_id', 'mobile_number', 'role', 'active', 'staff', 'admin', 'date_created', 'date_modified']
 
 
 class UserCoursesSerializer(serializers.ModelSerializer):
@@ -30,7 +30,7 @@ class UserCoursesSerializer(serializers.ModelSerializer):
     serializer for UserCourses model
     """
     id = serializers.IntegerField(required=False, read_only=True)
-    user = UserSerializer()
+    user = UserSerializer(many=True)
     course_id = serializers.IntegerField()
     date_created = serializers.DateTimeField(read_only=True)
     date_modified = serializers.DateTimeField(read_only=True)
@@ -45,7 +45,7 @@ class FacultyCoursesSerializer(serializers.ModelSerializer):
     serializer for FacultyCourses model
     """
     id = serializers.IntegerField(required=False, read_only=True)
-    user = UserSerializer()
+    user = UserSerializer(many=True)
     course_id = serializers.IntegerField()
     date_created = serializers.DateTimeField(read_only=True)
     date_modified = serializers.DateTimeField(read_only=True)
