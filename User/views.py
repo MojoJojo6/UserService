@@ -33,7 +33,8 @@ class UserList(ListAPIView):
     """
     returns the list of all users or a specific user with the email address
     """
-    multiple_lookup_fields = {'email_id'}
+    # lookup_field = "email_id"
+    # multiple_lookup_fields = {"email_id"}
 
     def get_queryset(self):
         """
@@ -49,23 +50,27 @@ class UserList(ListAPIView):
         """
         return UserSerializer
 
-    def get_object(self):
-        """
-        returns the object instance
-        :return:
-        """
-        filter = {}
-        for field in self.multiple_lookup_fields:
-            filter[field] = self.kwargs[field]
-
-        obj = get_object_or_404(self.queryset, **filter)
-        return obj
+    # def get_object(self):
+    #     """
+    #     returns the object instance
+    #     :return:
+    #     """
+    #     filter = {}
+    #
+    #     print(self.kwargs)
+    #
+    #     for field in self.multiple_lookup_fields:
+    #         filter[field] = self.kwargs[field]
+    #
+    #     obj = get_object_or_404(self.queryset, **filter)
+    #     return obj
 
 
 class UserCreate(CreateAPIView):
     """
     returns the list of all users or a specific user with the email address
     """
+    lookup_field = 'id'
 
     # def get_queryset(self):
     #     """
