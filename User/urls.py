@@ -13,14 +13,30 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
 from django.urls import path, re_path
+
 from .views import UserList
+from .views import UserRetrieveUpdateDestroy
 from .views import UserCreate
-from django.urls import include
+
+from .views import UserCoursesList
+from .views import UserCoursesRetrieveUpdateDestroy
+from .views import UserCoursesCreate
+
+from .views import FacultyCoursesList
+from .views import FacultyCoursesRetrieveUpdateDestroy
+from .views import FacultyCoursesCreate
 
 urlpatterns = [
     path("users/", UserList.as_view()),
-    path("users/<int:u_id>/", UserList.as_view()),
-    path("user-create/", UserCreate.as_view())
+    path("users/<str:email_id>/<str:mobile_number>", UserRetrieveUpdateDestroy.as_view()),
+    path("user-create/", UserCreate.as_view()),
+
+    path("user-courses/", UserCoursesList.as_view()),
+    path("user-courses/<str:email_id>/", UserCoursesRetrieveUpdateDestroy.as_view()),
+    path("user-courses-create/", UserCoursesCreate.as_view()),
+
+    path("faculty-courses/", FacultyCoursesList.as_view()),
+    path("faculty-courses/<str:email_id>/", FacultyCoursesRetrieveUpdateDestroy.as_view()),
+    path("faculty-courses-create", FacultyCoursesCreate.as_view())
 ]
