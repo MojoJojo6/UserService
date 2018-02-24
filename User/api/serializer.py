@@ -30,8 +30,8 @@ class UserCoursesSerializer(serializers.ModelSerializer):
     serializer for UserCourses model
     """
     id = serializers.IntegerField(required=False, read_only=True)
-    user = serializers.RelatedField()
-    course_id = serializers.RelatedField()
+    user = UserSerializer(many=True)
+    course_id = serializers.IntegerField()
     date_created = serializers.DateTimeField(read_only=True)
     date_modified = serializers.DateTimeField(read_only=True)
 
@@ -45,8 +45,8 @@ class FacultyCoursesSerializer(serializers.ModelSerializer):
     serializer for FacultyCourses model
     """
     id = serializers.IntegerField(required=False, read_only=True)
-    user = serializers.RelatedField()
-    course_id = serializers.RelatedField()
+    user = UserSerializer(many=True)
+    course_id = serializers.IntegerField()
     date_created = serializers.DateTimeField(read_only=True)
     date_modified = serializers.DateTimeField(read_only=True)
 
