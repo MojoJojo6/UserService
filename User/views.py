@@ -56,7 +56,7 @@ class UserRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
     """
     returns information for specific users with email address, updates and deletes users with specific email addresses
     """
-    multiple_lookup_fields = {"email_id", "mobile_number"}
+    multiple_lookup_fields = {"email_id"}
 
     def get_queryset(self):
         """
@@ -77,7 +77,7 @@ class UserRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
         returns the object instance
         :return:
         """
-        filter = {}
+        filter_dict = {}
         queryset = self.get_queryset()
         # self.queryset should always be used because self.queryset gets evaluated once and is cached for subsequent operations
 
@@ -85,9 +85,9 @@ class UserRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
         print(self.kwargs)
 
         for field in self.multiple_lookup_fields:
-            filter[field] = self.kwargs[field]
+            filter_dict[field] = self.kwargs[field]
 
-        obj = get_object_or_404(queryset, **filter)
+        obj = get_object_or_404(queryset, **filter_dict)
         return obj
 
 
@@ -150,14 +150,15 @@ class UserCoursesRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
         returns the object instance
         :return:
         """
-        filter = {}
+        filter_dict = {}
         print("printing keyword arguments")  # DEBUG
         print(self.kwargs)  # DEBUG
 
         for field in self.multiple_lookup_fields:
-            filter[field] = self.kwargs[field]
+            if field in self.kwargs.keys():
+                filter_dict[field] = self.kwargs[field]
 
-        obj = get_object_or_404(self.queryset, **filter)
+        obj = get_object_or_404(self.queryset, **filter_dict)
         return obj
 
 
@@ -220,14 +221,15 @@ class FacultyCoursesRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
         returns the object instance
         :return:
         """
-        filter = {}
+        filter_dict = {}
         print("printing keyword arguments")  # DEBUG
         print(self.kwargs)  # DEBUG
 
         for field in self.multiple_lookup_fields:
-            filter[field] = self.kwargs[field]
+            if field in self.kwargs.keys():
+                filter_dict[field] = self.kwargs[field]
 
-        obj = get_object_or_404(self.queryset, **filter)
+        obj = get_object_or_404(self.queryset, **filter_dict)
         return obj
 
 

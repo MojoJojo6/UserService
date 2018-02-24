@@ -29,14 +29,16 @@ from .views import FacultyCoursesCreate
 
 urlpatterns = [
     path("users/", UserList.as_view()),
-    path("users/<str:email_id>/<str:mobile_number>", UserRetrieveUpdateDestroy.as_view()),
+    path("users/<str:email_id>/", UserRetrieveUpdateDestroy.as_view()),
     path("user-create/", UserCreate.as_view()),
 
     path("user-courses/", UserCoursesList.as_view()),
-    path("user-courses/<str:email_id>/", UserCoursesRetrieveUpdateDestroy.as_view()),
+    path("user-courses-emailid/<str:email_id>/", UserCoursesRetrieveUpdateDestroy.as_view()),
+    path("user-courses-courseid/<str:course_id>/", UserCoursesRetrieveUpdateDestroy.as_view()),
     path("user-courses-create/", UserCoursesCreate.as_view()),
 
     path("faculty-courses/", FacultyCoursesList.as_view()),
-    path("faculty-courses/<str:email_id>/", FacultyCoursesRetrieveUpdateDestroy.as_view()),
+    path("faculty-courses-emailid/<str:email_id>/", FacultyCoursesRetrieveUpdateDestroy.as_view()),
+    path("faculty-courses-courseid/<str:course_id>/", FacultyCoursesRetrieveUpdateDestroy.as_view()),
     path("faculty-courses-create", FacultyCoursesCreate.as_view())
 ]
