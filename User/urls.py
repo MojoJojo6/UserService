@@ -15,6 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from .views import UserList
 from django.urls import include
 
-urlpatterns = []
+urlpatterns = [
+    path("/users/", UserList.as_view())
+]
