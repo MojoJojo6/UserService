@@ -123,8 +123,11 @@ class UserCourses(models.Model):
     ucid = models.BigAutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete="cascade")
     course_id = models.BigIntegerField()
-    date_created = models.DateTimeField()
-    date_modified = models.DateTimeField()
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = (("user", "course_id"), )
 
     def __str__(self):
         """
@@ -148,8 +151,11 @@ class FacultyCourses(models.Model):
     ufid = models.BigAutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete="cascade")
     course_id = models.BigIntegerField()
-    date_created = models.DateTimeField()
-    date_modified = models.DateTimeField()
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = (("user", "course_id"), )
 
     def __str__(self):
         """
@@ -164,3 +170,4 @@ class FacultyCourses(models.Model):
         :return:
         return "FacultyCourses Model: {}, {}" .format(self.user, self.course_id)
         """
+        return "FacultyCourses Model: {}, {}" .format(self.user, self.course_id)

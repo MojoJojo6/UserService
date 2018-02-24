@@ -16,7 +16,8 @@ Faculty Course:
 3. map course to user and vice versa
 """
 
-from rest_framework.generics import get_object_or_404
+from django.shortcuts import  get_object_or_404
+from django.shortcuts import get_list_or_404
 from rest_framework.generics import ListAPIView
 from rest_framework.generics import CreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
@@ -80,9 +81,6 @@ class UserRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
         filter_dict = {}
         queryset = self.get_queryset()
         # self.queryset should always be used because self.queryset gets evaluated once and is cached for subsequent operations
-
-        print("keyword arguments")
-        print(self.kwargs)
 
         for field in self.multiple_lookup_fields:
             filter_dict[field] = self.kwargs[field]
@@ -151,14 +149,13 @@ class UserCoursesRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
         :return:
         """
         filter_dict = {}
-        print("printing keyword arguments")  # DEBUG
-        print(self.kwargs)  # DEBUG
+        queryset = self.get_queryset()
 
         for field in self.multiple_lookup_fields:
             if field in self.kwargs.keys():
                 filter_dict[field] = self.kwargs[field]
 
-        obj = get_object_or_404(self.queryset, **filter_dict)
+        obj = get_object_or_404(queryset, **filter_dict)
         return obj
 
 
@@ -222,14 +219,13 @@ class FacultyCoursesRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
         :return:
         """
         filter_dict = {}
-        print("printing keyword arguments")  # DEBUG
-        print(self.kwargs)  # DEBUG
+        queryset = self.get_queryset()
 
         for field in self.multiple_lookup_fields:
             if field in self.kwargs.keys():
                 filter_dict[field] = self.kwargs[field]
 
-        obj = get_object_or_404(self.queryset, **filter_dict)
+        obj = get_object_or_404(queryset, **filter_dict)
         return obj
 
 

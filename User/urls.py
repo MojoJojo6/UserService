@@ -40,5 +40,5 @@ urlpatterns = [
     path("faculty-courses/", FacultyCoursesList.as_view()),
     path("faculty-courses-emailid/<str:email_id>/", FacultyCoursesRetrieveUpdateDestroy.as_view()),
     path("faculty-courses-courseid/<str:course_id>/", FacultyCoursesRetrieveUpdateDestroy.as_view()),
-    path("faculty-courses-create", FacultyCoursesCreate.as_view())
+    path("faculty-courses-create/", FacultyCoursesCreate.as_view())
 ]

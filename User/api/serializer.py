@@ -22,7 +22,8 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['u_id', 'first_name', 'last_name', 'email_id', 'mobile_number', 'role', 'active', 'staff', 'admin', 'date_created', 'date_modified']
+        fields = ['u_id', 'first_name', 'last_name', 'email_id', 'mobile_number', 'role', 'active', 'staff', 'admin',
+                  'date_created', 'date_modified']
 
 
 class UserCoursesSerializer(serializers.ModelSerializer):
@@ -30,7 +31,8 @@ class UserCoursesSerializer(serializers.ModelSerializer):
     serializer for UserCourses model
     """
     id = serializers.IntegerField(required=False, read_only=True)
-    user = serializers.PrimaryKeyRelatedField(many=True, queryset=User.objects.all())
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True)
+    # user = UserSerializer(many=True)
     course_id = serializers.IntegerField()
     date_created = serializers.DateTimeField(read_only=True)
     date_modified = serializers.DateTimeField(read_only=True)
@@ -45,10 +47,31 @@ class FacultyCoursesSerializer(serializers.ModelSerializer):
     serializer for FacultyCourses model
     """
     id = serializers.IntegerField(required=False, read_only=True)
-    user = serializers.PrimaryKeyRelatedField(many=True, queryset=User.objects.all())
+    # user = UserSerializer(many=True)
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True)
     course_id = serializers.IntegerField()
     date_created = serializers.DateTimeField(read_only=True)
     date_modified = serializers.DateTimeField(read_only=True)
+
+    def create(self, validated_data):
+        """
+        for data creation
+        :param validated_data:
+        :return:
+        """
+        # since we are using the same serializer both for retrieving and creating FacultyCourses we are using this separate method
+        # for creation
+        if len(validated_data["user"]) != 1:
+            raise ValueError("More than one user was entered")
+        import ipdb
+        ipdb.set_trace()
+
+        faculty_courses_dict = {
+            'user': validated_data['user'][0],
+            'course_id': validated_data['course_id']
+        }
+        return FacultyCourses.objects.create(**faculty_courses_dict)
+
 
     class Meta:
         model = FacultyCourses
