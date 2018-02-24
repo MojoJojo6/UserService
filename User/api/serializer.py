@@ -31,24 +31,9 @@ class UserCoursesSerializer(serializers.ModelSerializer):
     serializer for UserCourses model
     """
     id = serializers.IntegerField(required=False, read_only=True)
-    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True)
-    # user = UserSerializer(many=True)
-    course_id = serializers.IntegerField()
-    date_created = serializers.DateTimeField(read_only=True)
-    date_modified = serializers.DateTimeField(read_only=True)
-
-    class Meta:
-        model = UserCourses
-        fields = ['id', 'user', 'course_id', 'date_created', 'date_modified']
-
-
-class FacultyCoursesSerializer(serializers.ModelSerializer):
-    """
-    serializer for FacultyCourses model
-    """
-    id = serializers.IntegerField(required=False, read_only=True)
-    # user = UserSerializer(many=True)
-    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True)
+    # user = serializers.ManyRelatedField(queryset=User.objects.all(), many=True)
+    # user = serializers.IntegerField()
+    user = UserSerializer(many=True)
     course_id = serializers.IntegerField()
     date_created = serializers.DateTimeField(read_only=True)
     date_modified = serializers.DateTimeField(read_only=True)
@@ -63,8 +48,40 @@ class FacultyCoursesSerializer(serializers.ModelSerializer):
         # for creation
         if len(validated_data["user"]) != 1:
             raise ValueError("More than one user was entered")
-        import ipdb
-        ipdb.set_trace()
+
+        user_courses_dict = {
+            'user': validated_data['user'][0],
+            'course_id': validated_data['course_id']
+        }
+        return UserCourses.objects.create(**user_courses_dict)
+
+    class Meta:
+        model = UserCourses
+        fields = ['id', 'user', 'course_id', 'date_created', 'date_modified']
+
+
+class FacultyCoursesSerializer(serializers.ModelSerializer):
+    """
+    serializer for FacultyCourses model
+    """
+    id = serializers.IntegerField(required=False, read_only=True)
+    # user = UserSerializer(many=True)
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True)
+    # user = serializers.IntegerField()
+    course_id = serializers.IntegerField()
+    date_created = serializers.DateTimeField(read_only=True)
+    date_modified = serializers.DateTimeField(read_only=True)
+
+    def create(self, validated_data):
+        """
+        for data creation
+        :param validated_data:
+        :return:
+        """
+        # since we are using the same serializer both for retrieving and creating FacultyCourses we are using this separate method
+        # for creation
+        if len(validated_data["user"]) != 1:
+            raise ValueError("More than one user was entered")
 
         faculty_courses_dict = {
             'user': validated_data['user'][0],

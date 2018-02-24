@@ -126,9 +126,6 @@ class UserCourses(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
 
-    class Meta:
-        unique_together = (("user", "course_id"), )
-
     def __str__(self):
         """
         string representation of the model
@@ -154,9 +151,6 @@ class FacultyCourses(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
 
-    class Meta:
-        unique_together = (("user", "course_id"), )
-
     def __str__(self):
         """
         string representations of the model
@@ -168,6 +162,5 @@ class FacultyCourses(models.Model):
         """
         representation of the model
         :return:
-        return "FacultyCourses Model: {}, {}" .format(self.user, self.course_id)
         """
         return "FacultyCourses Model: {}, {}" .format(self.user, self.course_id)
