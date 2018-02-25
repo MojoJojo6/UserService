@@ -15,11 +15,13 @@ Faculty Course:
 2. get all faculty users for one course
 3. map course to user and vice versa
 """
+from rest_framework.response import Response
 
 from django.shortcuts import  get_object_or_404
 from rest_framework.generics import ListAPIView
 from rest_framework.generics import CreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
+from rest_framework.generics import DestroyAPIView
 
 from .models import User
 from .models import UserCourses
@@ -164,6 +166,35 @@ class UserCoursesCreate(CreateAPIView):
         return UserCoursesSerializerCreate
 
 
+class UserCoursesDelete(DestroyAPIView):
+    """
+    deletes list of users based on course ids
+    """
+    def get_serializer_class(self):
+        """
+        returns the serializer class
+        :return:
+        """
+        return UserCoursesSerializerList
+
+    def destroy(self, request, *args, **kwargs):
+        """
+        deletes multiple instances from the model
+        :param request:
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        try:
+            faculty_courses = UserCourses.objects.filter(**kwargs)
+            for element in faculty_courses:
+                print(element)
+                element.delete()
+            return Response("Successfully deleted")
+        except Exception:
+            raise Exception("LOL")
+
+
 ###############################################
 # FacultyCourses
 ###############################################
@@ -225,3 +256,32 @@ class FacultyCoursesCreate(CreateAPIView):
         :return:
         """
         return FacultyCoursesSerializerCreate
+
+
+class FacultyCoursesDelete(DestroyAPIView):
+    """
+    delete a faculty course
+    """
+    def get_serializer_class(self):
+        """
+        returns the serializer class
+        :return:
+        """
+        return FacultyCoursesSerializerList
+
+    def destroy(self, request, *args, **kwargs):
+        """
+        deletes multiple instances from the model
+        :param request:
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        try:
+            faculty_courses = FacultyCourses.objects.filter(**kwargs)
+            for element in faculty_courses:
+                print(element)
+                element.delete()
+            return Response("Successfully deleted")
+        except Exception:
+            raise Exception("LOL")

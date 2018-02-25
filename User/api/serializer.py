@@ -61,7 +61,7 @@ class UserCoursesSerializerList(serializers.ModelSerializer):
     serializer for UserCourses model
     """
     id = serializers.IntegerField(required=False, read_only=True)
-    user = UserSerializer(many=True)
+    user = UserSerializer()
     course_id = serializers.IntegerField()
     date_created = serializers.DateTimeField(read_only=True)
     date_modified = serializers.DateTimeField(read_only=True)

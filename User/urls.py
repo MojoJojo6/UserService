@@ -38,10 +38,12 @@ from .views import UserCreate
 from .views import UserCoursesList
 from .views import UserCoursesSelect
 from .views import UserCoursesCreate
+from .views import UserCoursesDelete
 
 from .views import FacultyCoursesList
 from .views import FacultyCoursesSelect
 from .views import FacultyCoursesCreate
+from .views import FacultyCoursesDelete
 
 urlpatterns = [
     path("users/", UserList.as_view()),
@@ -51,10 +53,12 @@ urlpatterns = [
     path("user-courses/", UserCoursesList.as_view()),
     path("user-courses-emailid/<str:email_id>/", UserCoursesSelect.as_view()),
     path("user-courses-courseid/<str:course_id>/", UserCoursesSelect.as_view()),
+    path("user-courses-delete-courseid/<str:course_id>/", UserCoursesDelete.as_view()),
     path("user-courses-create/", UserCoursesCreate.as_view()),
 
     path("faculty-courses/", FacultyCoursesList.as_view()),
     path("faculty-courses-emailid/<str:email_id>/", FacultyCoursesSelect.as_view()),
     path("faculty-courses-courseid/<str:course_id>/", FacultyCoursesSelect.as_view()),
+    path("faculty-courses-delete-courseid/<str:course_id>/", FacultyCoursesDelete.as_view()),
     path("faculty-courses-create/", FacultyCoursesCreate.as_view())
 ]
