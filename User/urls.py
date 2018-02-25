@@ -13,6 +13,22 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+"""
+1)users/ -> gives all the information for all the users
+2)users/<email_id>/  -> gives all the user information based on email parameter 
+3)user-create/ -> create all kinds of users ( future register function ) 
+
+4)user-courses ->gives all the users and its enrolled course list
+5)user-courses-emailid/<email_id> -> gives information of particular users (based on email_id) all enrolled courses 
+6)user-courses-courseid/<course_id> -> gives information of particular users (based on course_id) all enrolled courses
+7)user-course-create/ ->creates user-course mapping
+
+8)faculty-courses/ -> gives all the FacultyUsers and its enrolled course list
+9)faculty-course-emailid/ -> gives information of particular FacultyUsers (based on email_id) all enrolled courses
+10)faculty-course-courseid/ -> gives information of particular users (based on course_id) all enrolled courses
+11)faculty-courses-create/ -> creates faculty-course mapping
+
+"""
 from django.urls import path, re_path
 
 from .views import UserList
