@@ -86,7 +86,7 @@ class FacultyCoursesSerializerList(serializers.ModelSerializer):
         fields = ['id', 'user', 'course_id', 'date_created', 'date_modified']
 
 
-class FacultyCoursesSerializer(serializers.ModelSerializer):
+class FacultyCoursesSerializerCreate(serializers.ModelSerializer):
     """
     serializer for FacultyCourses model
     """

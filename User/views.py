@@ -26,8 +26,11 @@ from .models import UserCourses
 from .models import FacultyCourses
 
 from .api.serializer import UserSerializer
-from .api.serializer import FacultyCoursesSerializer
-from .api.serializer import UserCoursesSerializer
+from .api.serializer import UserCoursesSerializerList
+from .api.serializer import FacultyCoursesSerializerList
+
+from .api.serializer import UserCoursesSerializerCreate
+from .api.serializer import FacultyCoursesSerializerCreate
 
 
 ###############################################
@@ -119,7 +122,7 @@ class UserCoursesList(ListAPIView):
         returns the serializer class
         :return:
         """
-        return UserCoursesSerializer
+        return UserCoursesSerializerList
 
 
 class UserCoursesSelect(ListAPIView):
@@ -136,7 +139,7 @@ class UserCoursesSelect(ListAPIView):
         if "email_id" in self.kwargs.keys():
             user = User.objects.filter(email_id=self.kwargs["email_id"])
             # this will only return one user
-            return UserCourses.objects.filter(user=user)
+            return UserCourses.objects.filter(user=user[0])
 
         elif "course_id" in self.kwargs.keys():
             return UserCourses.objects.filter(course_id=self.kwargs["course_id"])
@@ -146,22 +149,7 @@ class UserCoursesSelect(ListAPIView):
         returns the serializer class
         :return:
         """
-        return UserCoursesSerializer
-
-    # def get_object(self):
-    #     """
-    #     returns the object instance
-    #     :return:
-    #     """
-    #     filter_dict = {}
-    #     queryset = self.get_queryset()
-    #
-    #     for field in self.multiple_lookup_fields:
-    #         if field in self.kwargs.keys():
-    #             filter_dict[field] = self.kwargs[field]
-    #
-    #     obj = get_object_or_404(queryset, **filter_dict)
-    #     return obj
+        return UserCoursesSerializerList
 
 
 class UserCoursesCreate(CreateAPIView):
@@ -173,7 +161,7 @@ class UserCoursesCreate(CreateAPIView):
         returns the serializer class to be used
         :return:
         """
-        return UserCoursesSerializer
+        return UserCoursesSerializerCreate
 
 
 ###############################################
@@ -195,7 +183,7 @@ class FacultyCoursesList(ListAPIView):
         returns the serializer class
         :return:
         """
-        return FacultyCoursesSerializer
+        return FacultyCoursesSerializerList
 
 
 class FacultyCoursesSelect(ListAPIView):
@@ -214,7 +202,7 @@ class FacultyCoursesSelect(ListAPIView):
         if "email_id" in self.kwargs.keys():
             user = User.objects.filter(email_id=self.kwargs["email_id"])
             # this will only return one user
-            return FacultyCourses.objects.filter(user=user)
+            return FacultyCourses.objects.filter(user=user[0])
 
         elif "course_id" in self.kwargs.keys():
             return FacultyCourses.objects.filter(course_id=int(self.kwargs["course_id"]))
@@ -224,22 +212,7 @@ class FacultyCoursesSelect(ListAPIView):
         returns the serializer class
         :return:
         """
-        return FacultyCoursesSerializer
-
-    def get_object(self):
-        """
-        returns the object instance
-        :return:
-        """
-        filter_dict = {}
-        queryset = self.get_queryset()
-
-        for field in self.multiple_lookup_fields:
-            if field in self.kwargs.keys():
-                filter_dict[field] = self.kwargs[field]
-
-        obj = get_object_or_404(queryset, **filter_dict)
-        return obj
+        return FacultyCoursesSerializerList
 
 
 class FacultyCoursesCreate(CreateAPIView):
@@ -251,4 +224,4 @@ class FacultyCoursesCreate(CreateAPIView):
         returns the serializer class to be used
         :return:
         """
-        return FacultyCoursesSerializer
+        return FacultyCoursesSerializerCreate
