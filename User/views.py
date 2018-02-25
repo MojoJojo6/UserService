@@ -17,7 +17,6 @@ Faculty Course:
 """
 
 from django.shortcuts import  get_object_or_404
-from django.shortcuts import get_list_or_404
 from rest_framework.generics import ListAPIView
 from rest_framework.generics import CreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
@@ -123,7 +122,7 @@ class UserCoursesList(ListAPIView):
         return UserCoursesSerializer
 
 
-class UserCoursesRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
+class UserCoursesSelect(ListAPIView):
     """
     returns a single user's courses or single course's users, updates and deletes usercourses
     """
@@ -134,7 +133,13 @@ class UserCoursesRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
         return the queryset
         :return:
         """
-        return UserCourses.objects.all()
+        if "email_id" in self.kwargs.keys():
+            user = User.objects.filter(email_id=self.kwargs["email_id"])
+            # this will only return one user
+            return UserCourses.objects.filter(user=user)
+
+        elif "course_id" in self.kwargs.keys():
+            return UserCourses.objects.filter(course_id=self.kwargs["course_id"])
 
     def get_serializer_class(self):
         """
@@ -143,20 +148,20 @@ class UserCoursesRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
         """
         return UserCoursesSerializer
 
-    def get_object(self):
-        """
-        returns the object instance
-        :return:
-        """
-        filter_dict = {}
-        queryset = self.get_queryset()
-
-        for field in self.multiple_lookup_fields:
-            if field in self.kwargs.keys():
-                filter_dict[field] = self.kwargs[field]
-
-        obj = get_object_or_404(queryset, **filter_dict)
-        return obj
+    # def get_object(self):
+    #     """
+    #     returns the object instance
+    #     :return:
+    #     """
+    #     filter_dict = {}
+    #     queryset = self.get_queryset()
+    #
+    #     for field in self.multiple_lookup_fields:
+    #         if field in self.kwargs.keys():
+    #             filter_dict[field] = self.kwargs[field]
+    #
+    #     obj = get_object_or_404(queryset, **filter_dict)
+    #     return obj
 
 
 class UserCoursesCreate(CreateAPIView):
@@ -193,7 +198,7 @@ class FacultyCoursesList(ListAPIView):
         return FacultyCoursesSerializer
 
 
-class FacultyCoursesRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
+class FacultyCoursesSelect(ListAPIView):
     """
     returns a single user's courses or single course's users, updates and deletes usercourses
     """
@@ -204,7 +209,15 @@ class FacultyCoursesRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
         return the queryset
         :return:
         """
-        return FacultyCourses.objects.all()
+        print (self.kwargs)
+
+        if "email_id" in self.kwargs.keys():
+            user = User.objects.filter(email_id=self.kwargs["email_id"])
+            # this will only return one user
+            return FacultyCourses.objects.filter(user=user)
+
+        elif "course_id" in self.kwargs.keys():
+            return FacultyCourses.objects.filter(course_id=int(self.kwargs["course_id"]))
 
     def get_serializer_class(self):
         """
