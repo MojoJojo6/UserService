@@ -91,7 +91,7 @@ class FacultyCoursesSerializerCreate(serializers.ModelSerializer):
     serializer for FacultyCourses model
     """
     id = serializers.IntegerField(required=False, read_only=True)
-    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True)
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
     course_id = serializers.IntegerField()
     date_created = serializers.DateTimeField(read_only=True)
     date_modified = serializers.DateTimeField(read_only=True)
@@ -102,9 +102,10 @@ class FacultyCoursesSerializerCreate(serializers.ModelSerializer):
         :param validated_data:
         :return:
         """
-
+        # import ipdb
+        # ipdb.set_trace()
         faculty_courses_dict = {
-            'user': validated_data['user'][0],
+            'user': validated_data['user'],
             'course_id': validated_data['course_id']
         }
         return FacultyCourses.objects.create(**faculty_courses_dict)
