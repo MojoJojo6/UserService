@@ -22,6 +22,7 @@ from rest_framework.generics import ListAPIView
 from rest_framework.generics import CreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.generics import DestroyAPIView
+from rest_framework.permissions import *
 
 from .models import User
 from .models import UserCourses
@@ -42,6 +43,8 @@ class UserList(ListAPIView):
     """
     returns the list of all users.
     """
+    permission_classes = [IsAdminUser]
+
     def get_queryset(self):
         """
         returns the queryset
@@ -61,6 +64,7 @@ class UserRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
     """
     returns information for specific users with email address, updates and deletes users with specific email addresses
     """
+    permission_classes = [IsAdminUser]
     multiple_lookup_fields = {"email_id"}
 
     def get_queryset(self):
@@ -97,6 +101,8 @@ class UserCreate(CreateAPIView):
     """
     returns the list of all users or a specific user with the email address
     """
+    permission_classes = [AllowAny]
+
     def get_serializer_class(self):
         """
         returns the serializer class to be used
@@ -112,6 +118,8 @@ class UserCoursesList(ListAPIView):
     """
     returns list of all users
     """
+    permission_classes = [IsAdminUser]
+
     def get_queryset(self):
         """
         returns all users
@@ -131,6 +139,7 @@ class UserCoursesSelect(ListAPIView):
     """
     returns a single user's courses or single course's users, updates and deletes usercourses
     """
+    permission_classes = [AllowAny]
     multiple_lookup_fields = {"email_id", "course_id"}
 
     def get_queryset(self):
@@ -158,6 +167,7 @@ class UserCoursesCreate(CreateAPIView):
     """
     creates a user
     """
+
     def get_serializer_class(self):
         """
         returns the serializer class to be used
