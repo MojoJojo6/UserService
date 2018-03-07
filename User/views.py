@@ -47,7 +47,7 @@ class UserList(ListAPIView):
     """
     returns the list of all users.
     """
-    # permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminUser]
 
     def get_queryset(self):
         """
@@ -68,7 +68,7 @@ class UserRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
     """
     returns information for specific users with email address, updates and deletes users with specific email addresses
     """
-    # permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminUser]
     multiple_lookup_fields = {"email_id"}
 
     def get_queryset(self):
@@ -105,7 +105,7 @@ class UserCreate(CreateAPIView):
     """
     returns the list of all users or a specific user with the email address
     """
-    # permission_classes = [AllowAny]
+    permission_classes = [AllowAny]
 
     def get_serializer_class(self):
         """
@@ -119,6 +119,8 @@ class UserFetch(RetrieveModelMixin, GenericAPIView):
     """
     returns true if a particular user exists
     """
+    permission_classes = [AllowAny]
+
     def get_queryset(self):
         """
         return the queryset
@@ -144,8 +146,12 @@ class UserFetch(RetrieveModelMixin, GenericAPIView):
         emailid = request.data["email_id"]
         password = request.data["password"]
 
-        if User.objects.get(email_id=emailid).check_password(password):
-            return Response("Found", status=200)
+        user = User.objects.get(email_id=emailid)
+        if user:
+            if user.check_password(password):
+                request.user = user
+                return Response("Found", status=200)
+
         return Response("Not Found", status=404)
 
     def get(self, request, *args, **kwargs):
@@ -166,7 +172,7 @@ class UserCoursesList(ListAPIView):
     """
     returns list of all users
     """
-    # permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminUser]
 
     def get_queryset(self):
         """
@@ -187,7 +193,7 @@ class UserCoursesSelect(ListAPIView):
     """
     returns a single user's courses or single course's users, updates and deletes usercourses
     """
-    # permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     multiple_lookup_fields = {"email_id", "course_id"}
 
     def get_queryset(self):
@@ -215,6 +221,7 @@ class UserCoursesCreate(CreateAPIView):
     """
     creates a user
     """
+    permission_classes = [IsAdminUser]
 
     def get_serializer_class(self):
         """
@@ -228,6 +235,8 @@ class UserCoursesDelete(DestroyAPIView):
     """
     deletes list of users based on course ids
     """
+    permission_classes = [IsAdminUser]
+
     def get_serializer_class(self):
         """
         returns the serializer class
@@ -260,6 +269,8 @@ class FacultyCoursesList(ListAPIView):
     """
     returns list of all users
     """
+    permission_classes = [IsAdminUser]
+
     def get_queryset(self):
         """
         returns all users
@@ -279,6 +290,7 @@ class FacultyCoursesSelect(ListAPIView):
     """
     returns a single user's courses or single course's users, updates and deletes usercourses
     """
+    permission_classes = [IsAdminUser]
     multiple_lookup_fields = {"email_id", "course_id"}
 
     def get_queryset(self):
@@ -308,6 +320,8 @@ class FacultyCoursesCreate(CreateAPIView):
     """
     creates a faculty course
     """
+    permission_classes = [IsAdminUser]
+
     def get_serializer_class(self):
         """
         returns the serializer class to be used
@@ -320,6 +334,8 @@ class FacultyCoursesDelete(DestroyAPIView):
     """
     delete a faculty course
     """
+    permission_classes = [IsAdminUser]
+
     def get_serializer_class(self):
         """
         returns the serializer class
