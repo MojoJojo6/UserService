@@ -18,10 +18,14 @@ Faculty Course:
 from rest_framework.response import Response
 
 from django.shortcuts import  get_object_or_404
+from rest_framework.generics import GenericAPIView
 from rest_framework.generics import ListAPIView
 from rest_framework.generics import CreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.generics import DestroyAPIView
+from rest_framework.generics import RetrieveAPIView
+from rest_framework.mixins import RetrieveModelMixin
+
 from rest_framework.permissions import *
 
 from .models import User
@@ -43,7 +47,7 @@ class UserList(ListAPIView):
     """
     returns the list of all users.
     """
-    permission_classes = [IsAdminUser]
+    # permission_classes = [IsAdminUser]
 
     def get_queryset(self):
         """
@@ -64,7 +68,7 @@ class UserRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
     """
     returns information for specific users with email address, updates and deletes users with specific email addresses
     """
-    permission_classes = [IsAdminUser]
+    # permission_classes = [IsAdminUser]
     multiple_lookup_fields = {"email_id"}
 
     def get_queryset(self):
@@ -101,7 +105,7 @@ class UserCreate(CreateAPIView):
     """
     returns the list of all users or a specific user with the email address
     """
-    permission_classes = [AllowAny]
+    # permission_classes = [AllowAny]
 
     def get_serializer_class(self):
         """
@@ -111,6 +115,50 @@ class UserCreate(CreateAPIView):
         return UserSerializer
 
 
+class UserFetch(RetrieveModelMixin, GenericAPIView):
+    """
+    returns true if a particular user exists
+    """
+    def get_queryset(self):
+        """
+        return the queryset
+        :return:
+        """
+        return User.objects.all()
+
+    def get_serializer_class(self):
+        """
+        gets the serializer class to be used
+        :return:
+        """
+        return UserSerializer
+
+    def post(self, request, *args, **kwargs):
+        """
+        handle a post request
+        :param request:
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        emailid = request.data["email_id"]
+        password = request.data["password"]
+
+        if User.objects.get(email_id=emailid).check_password(password):
+            return Response("Found", status=200)
+        return Response("Not Found", status=404)
+
+    def get(self, request, *args, **kwargs):
+        """
+        handles a get request
+        :param request:
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        return Response(status=403)
+
+
 ###############################################
 # UserCourses
 ###############################################
@@ -118,7 +166,7 @@ class UserCoursesList(ListAPIView):
     """
     returns list of all users
     """
-    permission_classes = [IsAdminUser]
+    # permission_classes = [IsAdminUser]
 
     def get_queryset(self):
         """
@@ -139,7 +187,7 @@ class UserCoursesSelect(ListAPIView):
     """
     returns a single user's courses or single course's users, updates and deletes usercourses
     """
-    permission_classes = [AllowAny]
+    # permission_classes = [AllowAny]
     multiple_lookup_fields = {"email_id", "course_id"}
 
     def get_queryset(self):

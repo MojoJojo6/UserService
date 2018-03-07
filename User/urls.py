@@ -34,6 +34,7 @@ from django.urls import path, re_path
 from .views import UserList
 from .views import UserRetrieveUpdateDestroy
 from .views import UserCreate
+from .views import UserFetch
 
 from .views import UserCoursesList
 from .views import UserCoursesSelect
@@ -48,6 +49,7 @@ from .views import FacultyCoursesDelete
 urlpatterns = [
     path("users/", UserList.as_view()),
     path("users/<str:email_id>/", UserRetrieveUpdateDestroy.as_view()),
+    path("users/user-fetch", UserFetch.as_view()),
     path("user-create/", UserCreate.as_view()),
 
     path("user-courses/", UserCoursesList.as_view()),
