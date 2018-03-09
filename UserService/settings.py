@@ -43,13 +43,7 @@ INSTALLED_APPS = [
 
 AUTH_USER_MODEL = 'User.User'
 
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.AllowAny',
-    )
-}
-
-SESSION_EXPIRY = "10" # expiry in seconds
+SESSION_EXPIRY = 300 # expiry in seconds
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

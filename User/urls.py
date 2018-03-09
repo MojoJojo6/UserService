@@ -35,6 +35,7 @@ from .views import UserList
 from .views import UserRetrieveUpdateDestroy
 from .views import UserCreate
 from .views import UserFetch
+from .views import UserLogout
 
 from .views import UserCoursesList
 from .views import UserCoursesSelect
@@ -50,6 +51,7 @@ urlpatterns = [
     path("users/", UserList.as_view()),
     path("users/<str:email_id>/", UserRetrieveUpdateDestroy.as_view()),
     path("users/user-fetch", UserFetch.as_view()),
+    path("users/user-logout", UserLogout.as_view()),
     path("user-create/", UserCreate.as_view()),
 
     path("user-courses/", UserCoursesList.as_view()),

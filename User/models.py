@@ -65,9 +65,9 @@ class User(AbstractBaseUser):
     def has_module_perms(self, app_label):
         return self.is_admin
 
-    # @property
-    # def is_staff(self):
-    #     return self.staff
+    @property
+    def is_staff(self):
+        return self.staff
 
     @property
     def is_admin(self):

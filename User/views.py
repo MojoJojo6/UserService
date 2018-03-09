@@ -15,7 +15,12 @@ Faculty Course:
 2. get all faculty users for one course
 3. map course to user and vice versa
 """
-from ..UserService import settings
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.getcwd())))
+import UserService.settings as settings # this is a hacky way of getting settings file, try and avoid
+from django.contrib.auth import authenticate, login, logout
+
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -109,16 +114,6 @@ class UserCreate(CreateAPIView):
     """
     permission_classes = [AllowAny]
 
-    def set_session(self, request, user):
-        """
-        sets the session of the user
-        :param request:
-        :return:
-        """
-        request.user = user;
-        request.user.is_staff = user.staff
-        request.session.set_expiry(settings.SESSION_EXPIRY)
-
     def get_serializer_class(self):
         """
         returns the serializer class to be used
@@ -141,7 +136,7 @@ class UserCreate(CreateAPIView):
         user = User.objects.get(email_id=request.data["email_id"])
         # note that the IsAdminUser permission classes checks 2 variables, request.user and request.user.is_staff
         # creating the session
-        self.set_session(request, user)
+        login(request, user)
 
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
@@ -152,16 +147,6 @@ class UserFetch(RetrieveModelMixin, GenericAPIView):
     returns true if a particular user exists
     """
     permission_classes = [AllowAny]
-
-    def set_session(self, request, user):
-        """
-        sets the session of the user
-        :param request:
-        :return:
-        """
-        request.user = user;
-        request.user.is_staff = user.staff
-        request.session.set_expiry(settings.SESSION_EXPIRY)
 
     def get_queryset(self):
         """
@@ -188,15 +173,10 @@ class UserFetch(RetrieveModelMixin, GenericAPIView):
         emailid = request.data["email_id"]
         password = request.data["password"]
 
-        user = User.objects.get(email_id=emailid)
-        if user:
-            if user.check_password(password):
-                # note that the IsAdminUser permission classes checks 2 variables, request.user and request.user.is_staff
-                # request.user = user
-                # request.user.is_staff = user.staff
-                self.set_session(request, user)
-
-                return Response("Found", status=200)
+        user = authenticate(request, email_id=emailid, password=password)
+        if user is not None:
+            login(request, user)
+            return Response("Found", status=200)
 
         return Response("Not Found", status=404)
 
@@ -209,6 +189,38 @@ class UserFetch(RetrieveModelMixin, GenericAPIView):
         :return:
         """
         return Response(status=403)
+
+
+class UserLogout(RetrieveModelMixin, GenericAPIView):
+    """
+    returns true if a particular user exists
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        """
+        return the queryset
+        :return:
+        """
+        return User.objects.all()
+
+    def get_serializer_class(self):
+        """
+        gets the serializer class to be used
+        :return:
+        """
+        return UserSerializer
+
+    def get(self, request, *args, **kwargs):
+        """
+        handle a post request
+        :param request:
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        logout(request)
+        return Response("Logged out", status=200)
 
 
 ###############################################
