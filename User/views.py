@@ -30,7 +30,6 @@ from rest_framework.generics import ListAPIView
 from rest_framework.generics import CreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.generics import DestroyAPIView
-from rest_framework.generics import RetrieveAPIView
 from rest_framework.mixins import RetrieveModelMixin
 
 from rest_framework.permissions import *
@@ -136,6 +135,7 @@ class UserCreate(CreateAPIView):
         user = User.objects.get(email_id=request.data["email_id"])
         # note that the IsAdminUser permission classes checks 2 variables, request.user and request.user.is_staff
         # creating the session
+        request.session.set_expiry(settings.SESSION_EXPIRY)
         login(request, user)
 
         headers = self.get_success_headers(serializer.data)
@@ -175,6 +175,7 @@ class UserFetch(RetrieveModelMixin, GenericAPIView):
 
         user = authenticate(request, email_id=emailid, password=password)
         if user is not None:
+            request.session.set_expiry(settings.SESSION_EXPIRY)
             login(request, user)
             return Response("Found", status=200)
 
