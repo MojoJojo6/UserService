@@ -49,6 +49,8 @@ REST_FRAMEWORK = {
     )
 }
 
+SESSION_EXPIRY = "10" # expiry in seconds
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
