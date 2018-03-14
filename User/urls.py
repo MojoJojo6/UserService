@@ -15,11 +15,11 @@ Including another URLconf
 """
 """
 1)users/ -> gives all the information for all the users
-2)users/<email_id>/  -> gives all the user information based on email parameter 
-3)user-create/ -> create all kinds of users ( future register function ) 
+2)users/<email_id>/  -> gives all the user information based on email parameter
+3)user-create/ -> create all kinds of users ( future register function )
 
 4)user-courses ->gives all the users and its enrolled course list
-5)user-courses-emailid/<email_id> -> gives information of particular users (based on email_id) all enrolled courses 
+5)user-courses-emailid/<email_id> -> gives information of particular users (based on email_id) all enrolled courses
 6)user-courses-courseid/<course_id> -> gives information of particular users (based on course_id) all enrolled courses
 7)user-course-create/ ->creates user-course mapping
 

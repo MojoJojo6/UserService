@@ -39,6 +39,7 @@ from .models import UserCourses
 from .models import FacultyCourses
 
 from .api.serializer import UserSerializer
+from .api.serializer import UserSerializerFetch
 from .api.serializer import UserCoursesSerializerList
 from .api.serializer import FacultyCoursesSerializerList
 
@@ -142,7 +143,7 @@ class UserCreate(CreateAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
-class UserFetch(RetrieveModelMixin, GenericAPIView):
+class UserFetch(CreateAPIView):
     """
     returns true if a particular user exists
     """
@@ -160,7 +161,7 @@ class UserFetch(RetrieveModelMixin, GenericAPIView):
         gets the serializer class to be used
         :return:
         """
-        return UserSerializer
+        return UserSerializerFetch
 
     def post(self, request, *args, **kwargs):
         """
@@ -172,27 +173,29 @@ class UserFetch(RetrieveModelMixin, GenericAPIView):
         """
         emailid = request.data["email_id"]
         password = request.data["password"]
+        serializer = UserSerializerFetch(data=request.data)
+        if serializer.is_valid():
 
-        user = authenticate(request, email_id=emailid, password=password)
-        if user is not None:
-            request.session.set_expiry(settings.SESSION_EXPIRY)
-            login(request, user)
-            return Response("Found", status=200)
+            user = authenticate(request, email_id=serializer.validated_data['email_id'], password=serializer.validated_data['password'])
+            if user is not None:
+                request.session.set_expiry(settings.SESSION_EXPIRY)
+                login(request, user)
+                return Response(data=UserSerializer(user).data, status=200)
 
         return Response("Not Found", status=404)
 
-    def get(self, request, *args, **kwargs):
-        """
-        handles a get request
-        :param request:
-        :param args:
-        :param kwargs:
-        :return:
-        """
-        return Response(status=403)
+    # def get(self, request, *args, **kwargs):
+    #     """
+    #     handles a get request
+    #     :param request:
+    #     :param args:
+    #     :param kwargs:
+    #     :return:
+    #     """
+    #     return Response(status=403)
 
 
-class UserLogout(RetrieveModelMixin, GenericAPIView):
+class UserLogout(DestroyAPIView):
     """
     returns true if a particular user exists
     """
@@ -212,7 +215,7 @@ class UserLogout(RetrieveModelMixin, GenericAPIView):
         """
         return UserSerializer
 
-    def get(self, request, *args, **kwargs):
+    def delete(self, request, *args, **kwargs):
         """
         handle a post request
         :param request:

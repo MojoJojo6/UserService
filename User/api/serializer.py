@@ -28,6 +28,18 @@ class UserSerializer(serializers.ModelSerializer):
                   'date_created', 'date_modified']
 
 
+class UserSerializerFetch(serializers.ModelSerializer):
+    """
+    serializer for user model
+    """
+    email_id = serializers.EmailField(max_length=255)
+    password = serializers.CharField(max_length=255, write_only=True, required=True)
+
+    class Meta:
+        model = User
+        fields = ['email_id', 'password']
+
+
 class UserCoursesSerializerCreate(serializers.ModelSerializer):
     """
     serializer for UserCourses model
