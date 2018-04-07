@@ -236,7 +236,7 @@ class UserCoursesList(ListAPIView):
     """
     returns list of all users
     """
-    permission_classes = [IsStudent]
+    permission_classes = [IsAuthenticated, IsStudent]
 
     def get_queryset(self):
         """
@@ -257,7 +257,7 @@ class UserCoursesSelect(ListAPIView):
     """
     returns a single user's courses or single course's users
     """
-    permission_classes = [IsStudent]
+    permission_classes = [IsAuthenticated, IsStudent]
     multiple_lookup_fields = {"email_id", "course_id"}
 
     def get_queryset(self):
@@ -285,7 +285,7 @@ class UserCoursesCreate(CreateAPIView):
     """
     creates a user
     """
-    permission_classes = [IsStudent]
+    permission_classes = [IsAuthenticated, IsStudent]
 
     def get_serializer_class(self):
         """
@@ -299,7 +299,7 @@ class UserCoursesDelete(DestroyAPIView):
     """
     deletes list of users based on course ids
     """
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated, IsStudent]
 
     def get_serializer_class(self):
         """
@@ -333,7 +333,7 @@ class FacultyCoursesList(ListAPIView):
     """
     returns list of all users
     """
-    permission_classes = [IsFaculty]
+    permission_classes = [IsAuthenticated, IsFaculty]
 
     def get_queryset(self):
         """
@@ -354,7 +354,7 @@ class FacultyCoursesSelect(ListAPIView):
     """
     returns a single user's courses or single course's users, updates and deletes usercourses
     """
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated, IsFaculty]
     multiple_lookup_fields = {"email_id", "course_id"}
 
     def get_queryset(self):
@@ -384,7 +384,7 @@ class FacultyCoursesCreate(CreateAPIView):
     """
     creates a faculty course
     """
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated, IsFaculty]
 
     def get_serializer_class(self):
         """
@@ -398,7 +398,7 @@ class FacultyCoursesDelete(DestroyAPIView):
     """
     delete a faculty course
     """
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated, IsFaculty]
 
     def get_serializer_class(self):
         """
