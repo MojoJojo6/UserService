@@ -7,3 +7,10 @@ class IsFaculty(permissions.BasePermission):
             return True
         else:
             return False
+
+class IsStudent(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if request.user.roles == 2:
+            return True
+        else:
+            return False
