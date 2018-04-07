@@ -253,7 +253,7 @@ class UserCoursesList(ListAPIView):
 
 class UserCoursesSelect(ListAPIView):
     """
-    returns a single user's courses or single course's users, updates and deletes usercourses
+    returns a single user's courses or single course's users
     """
     permission_classes = [IsAdminUser]
     multiple_lookup_fields = {"email_id", "course_id"}
