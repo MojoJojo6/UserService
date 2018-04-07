@@ -165,7 +165,7 @@ class UserFetch(CreateAPIView):
         """
         return UserSerializerFetch
 
-    def post(self, request, *args, **kwargs):
+    def create(self, request, *args, **kwargs):
         """
         handle a post request
         :param request:
@@ -182,7 +182,8 @@ class UserFetch(CreateAPIView):
             if user is not None:
                 request.session.set_expiry(settings.SESSION_EXPIRY)
                 login(request, user)
-                return Response(data=UserSerializer(user).data, status=200)
+                headers = self.get_success_headers(serializer.data)
+                return Response(data=UserSerializer(user).data, status=200, headers=headers)
 
         return Response("Not Found", status=404)
 
