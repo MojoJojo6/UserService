@@ -46,6 +46,8 @@ from .api.serializer import FacultyCoursesSerializerList
 from .api.serializer import UserCoursesSerializerCreate
 from .api.serializer import FacultyCoursesSerializerCreate
 
+from .permissions import IsFaculty
+from .permissions import IsStudent
 
 ###############################################
 # User
@@ -234,7 +236,7 @@ class UserCoursesList(ListAPIView):
     """
     returns list of all users
     """
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsStudent]
 
     def get_queryset(self):
         """
@@ -255,7 +257,7 @@ class UserCoursesSelect(ListAPIView):
     """
     returns a single user's courses or single course's users
     """
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsStudent]
     multiple_lookup_fields = {"email_id", "course_id"}
 
     def get_queryset(self):
@@ -283,7 +285,7 @@ class UserCoursesCreate(CreateAPIView):
     """
     creates a user
     """
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsStudent]
 
     def get_serializer_class(self):
         """
@@ -331,7 +333,7 @@ class FacultyCoursesList(ListAPIView):
     """
     returns list of all users
     """
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsFaculty]
 
     def get_queryset(self):
         """
