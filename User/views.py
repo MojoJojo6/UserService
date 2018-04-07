@@ -236,7 +236,7 @@ class UserCoursesList(ListAPIView):
     """
     returns list of all users
     """
-    permission_classes = [IsAdminUser,IsStudent]
+    permission_classes = [IsStudent]
 
     def get_queryset(self):
         """
@@ -257,7 +257,7 @@ class UserCoursesSelect(ListAPIView):
     """
     returns a single user's courses or single course's users, updates and deletes usercourses
     """
-    permission_classes = [IsAdminUser,IsStudent]
+    permission_classes = [IsStudent]
     multiple_lookup_fields = {"email_id", "course_id"}
 
     def get_queryset(self):
@@ -285,7 +285,7 @@ class UserCoursesCreate(CreateAPIView):
     """
     creates a user
     """
-    permission_classes = [IsAdminUser,IsStudent]
+    permission_classes = [IsStudent]
 
     def get_serializer_class(self):
         """
@@ -333,7 +333,7 @@ class FacultyCoursesList(ListAPIView):
     """
     returns list of all users
     """
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsFaculty]
 
     def get_queryset(self):
         """
