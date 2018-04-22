@@ -6,7 +6,7 @@ from django.contrib.auth.models import (
 
 class UserManager(BaseUserManager):
 
-    def create(self, **validated_data):
+    def create_user(self, **validated_data):
 
         if not validated_data["email_id"]:
             raise ValueError("Email Id is required")
@@ -30,8 +30,20 @@ class UserManager(BaseUserManager):
         user_obj.set_password(validated_data["password"])
         user_obj.save(using=self.db)
         return user_obj
+    
+    def create_superuser(self, **validated_data):
+        validated_data['staff'] = True
+        validated_data['admin'] = True
+        validated_data['active'] = True
+        return self.create_user(**validated_data)
 
+    def create_staffuser(self, **validated_data):
+        validated_data['staff'] = True
+        validated_data['admin'] = False
+        validated_data['active'] = True
+        return self.create_user(**validated_data)
 
+    
 class User(AbstractBaseUser):
     """ User Table for User Service"""
     roles = [(0, "Admin"), (1, "Faculty"), (2, "Student")]
@@ -49,7 +61,7 @@ class User(AbstractBaseUser):
     date_modified = models.DateTimeField(auto_now=True)
 
     USERNAME_FIELD = 'email_id'
-    REQUIRED_FIELDS = ['first_name','last_name','role']
+    REQUIRED_FIELDS = ['first_name','last_name','role', 'mobile_number']
 
     objects = UserManager()
 

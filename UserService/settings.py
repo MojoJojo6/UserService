@@ -93,12 +93,12 @@ WSGI_APPLICATION = 'UserService.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'CapstoneUserDB',
-        'USER': 'root',
-        'PASSWORD': os.environ['mysql_root_password'],
-        'HOST': 'localhost',
-        'PORT': 3306
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'CapstoneUserDB.sqlite3',
+        # 'USER': 'root',
+        # 'PASSWORD': os.environ['mysql_root_password'],
+        # 'HOST': 'localhost',
+        # 'PORT': 3306
     }
 }
 
