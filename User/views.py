@@ -77,7 +77,7 @@ class UserRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
     """
     returns information for specific users with email address, updates and deletes users with specific email addresses
     """
-    permission_classes = [IsAdminUser]
+    permission_classes = [AllowAny]
     multiple_lookup_fields = {"email_id"}
 
     def get_queryset(self):
@@ -138,6 +138,7 @@ class UserCreate(CreateAPIView):
         user = User.objects.get(email_id=request.data["email_id"])
         # note that the IsAdminUser permission classes checks 2 variables, request.user and request.user.is_staff
         # creating the session
+    
         request.session.set_expiry(settings.SESSION_EXPIRY)
         login(request, user)
 
@@ -177,7 +178,8 @@ class UserFetch(CreateAPIView):
         password = request.data["password"]
         serializer = UserSerializerFetch(data=request.data)
         if serializer.is_valid():
-
+            # import pdb
+            # pdb.set_trace()
             user = authenticate(request, email_id=serializer.validated_data['email_id'], password=serializer.validated_data['password'])
             if user is not None:
                 request.session.set_expiry(settings.SESSION_EXPIRY)
@@ -202,7 +204,8 @@ class UserLogout(DestroyAPIView):
     """
     returns true if a particular user exists
     """
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get_queryset(self):
         """
@@ -237,7 +240,8 @@ class UserCoursesList(ListAPIView):
     """
     returns list of all users
     """
-    permission_classes = [IsAuthenticated, IsStudent]
+    # permission_classes = [IsAuthenticated, IsStudent]
+    permission_classes = [AllowAny]
 
     def get_queryset(self):
         """
@@ -258,7 +262,8 @@ class UserCoursesSelect(ListAPIView):
     """
     returns a single user's courses or single course's users
     """
-    permission_classes = [IsAuthenticated, IsStudent]
+    # permission_classes = [IsAuthenticated, IsStudent]
+    permission_classes = [AllowAny]
     multiple_lookup_fields = {"email_id", "course_id"}
 
     def get_queryset(self):
@@ -286,7 +291,8 @@ class UserCoursesCreate(CreateAPIView):
     """
     creates a user
     """
-    permission_classes = [IsAuthenticated, IsStudent]
+    # permission_classes = [IsAuthenticated, IsStudent]
+    permission_classes = [AllowAny]
 
     def get_serializer_class(self):
         """
@@ -300,7 +306,8 @@ class UserCoursesDelete(DestroyAPIView):
     """
     deletes list of users based on course ids
     """
-    permission_classes = [IsAuthenticated, IsStudent]
+    # permission_classes = [IsAuthenticated, IsStudent]
+    permission_classes = [AllowAny]
 
     def get_serializer_class(self):
         """
@@ -334,7 +341,8 @@ class FacultyCoursesList(ListAPIView):
     """
     returns list of all users
     """
-    permission_classes = [IsAuthenticated, IsFaculty]
+    # permission_classes = [IsAuthenticated, IsFaculty]
+    permission_classes = [AllowAny]
 
     def get_queryset(self):
         """
@@ -355,7 +363,8 @@ class FacultyCoursesSelect(ListAPIView):
     """
     returns a single user's courses or single course's users, updates and deletes usercourses
     """
-    permission_classes = [IsAuthenticated, IsFaculty]
+    # permission_classes = [IsAuthenticated, IsFaculty]
+    permission_classes = [AllowAny]
     multiple_lookup_fields = {"email_id", "course_id"}
 
     def get_queryset(self):
@@ -385,7 +394,8 @@ class FacultyCoursesCreate(CreateAPIView):
     """
     creates a faculty course
     """
-    permission_classes = [IsAuthenticated, IsFaculty]
+    # permission_classes = [IsAuthenticated, IsFaculty]
+    permission_classes = [AllowAny]
 
     def get_serializer_class(self):
         """
@@ -399,8 +409,9 @@ class FacultyCoursesDelete(DestroyAPIView):
     """
     delete a faculty course
     """
-    permission_classes = [IsAuthenticated, IsFaculty]
-
+    # permission_classes = [IsAuthenticated, IsFaculty]
+    permission_classes = [AllowAny]
+    
     def get_serializer_class(self):
         """
         returns the serializer class

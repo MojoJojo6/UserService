@@ -6,7 +6,7 @@ from django.contrib.auth.models import (
 
 class UserManager(BaseUserManager):
 
-    def create_user(self, **validated_data):
+    def create(self, **validated_data):
 
         if not validated_data["email_id"]:
             raise ValueError("Email Id is required")
@@ -35,13 +35,13 @@ class UserManager(BaseUserManager):
         validated_data['staff'] = True
         validated_data['admin'] = True
         validated_data['active'] = True
-        return self.create_user(**validated_data)
+        return self.create(**validated_data)
 
     def create_staffuser(self, **validated_data):
         validated_data['staff'] = True
         validated_data['admin'] = False
         validated_data['active'] = True
-        return self.create_user(**validated_data)
+        return self.create(**validated_data)
 
     
 class User(AbstractBaseUser):

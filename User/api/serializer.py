@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 from ..models import User
 from ..models import UserCourses
 from ..models import FacultyCourses
@@ -12,7 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
     u_id = serializers.IntegerField(required=False, read_only=True)
     first_name = serializers.CharField(max_length=20)
     last_name = serializers.CharField(max_length=20)
-    email_id = serializers.EmailField(max_length=255)
+    email_id = serializers.EmailField(max_length=255, validators=[UniqueValidator(queryset=User.objects.all())])
     password = serializers.CharField(max_length=255, write_only=True, required=True)
     mobile_number = serializers.CharField(max_length=20, required=False)
     role = serializers.ChoiceField(choices=User.roles)
