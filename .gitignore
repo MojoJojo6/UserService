@@ -111,4 +111,4 @@ ENV/
 *pip-selfcheck.json
 
 # db
-*sqlite*
+# *sqlite*
